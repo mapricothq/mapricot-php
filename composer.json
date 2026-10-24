@@ -1,0 +1,23 @@
+{
+    "name": "mapricot/mapricot",
+    "description": "Official client for the Mapricot API: geocoding, places, routing, and IP geolocation.",
+    "keywords": ["geocoding", "places", "routing", "ip-geolocation", "maps"],
+    "homepage": "https://mapricot.com/",
+    "license": "MIT",
+    "support": {
+        "docs": "https://mapricot.com/docs/php/",
+        "issues": "https://github.com/mapricothq/mapricot-php/issues",
+        "source": "https://github.com/mapricothq/mapricot-php"
+    },
+    "require": {
+        "php": ">=8.1",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {"Mapricot\\": "src/"}
+    }
+}
