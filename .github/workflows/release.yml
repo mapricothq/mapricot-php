@@ -1,14 +1,25 @@
 name: Release
-# Packagist publishes each tag such as v0.1.0 on its own, through its GitHub hook. This checks the version constant.
+# Tags Client::VERSION once it's merged to main and has no tag yet. Packagist publishes each tag on its own,
+# through its GitHub hook.
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
+concurrency: release
 permissions:
-  contents: read
+  contents: write
 jobs:
-  check:
+  release:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-      - run: grep -qx "    public const VERSION = '${GITHUB_REF_NAME#v}';" src/Client.php
+      - id: check
+        run: |
+          version=$(sed -n "s/^    public const VERSION = '\(.*\)';$/\1/p" src/Client.php)
+          test -n "$version"
+          git ls-remote --exit-code --tags origin "v$version" || echo "tag=v$version" >> "$GITHUB_OUTPUT"
+      - if: steps.check.outputs.tag
+        run: gh release create "$TAG" --target "$GITHUB_SHA" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.check.outputs.tag }}

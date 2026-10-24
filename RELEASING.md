@@ -1,8 +1,8 @@
 # Releasing
 
-1. Bump the version in `src/Client.php` (`Client::VERSION`), following [semantic versioning](https://semver.org/), and merge it to `main`.
-2. Publish a GitHub release whose tag is that version with a `v`, such as `v0.2.0`: `gh release create v0.2.0 --generate-notes`.
-3. Packagist publishes the tag on its own. The release workflow only checks that the tag matches `Client::VERSION`.
+Bump the version in `src/Client.php` (`Client::VERSION`), following [semantic versioning](https://semver.org/), and merge it to `main`. When the new version, such as `0.2.0`, has no tag yet, the release workflow creates the GitHub release and tag `v0.2.0`, and Packagist publishes the tag on its own. Merges that don't change the version release nothing.
+
+If the release workflow fails, fix the cause and re-run it from the Actions tab.
 
 ## Keeping up with the API
 
