@@ -15,14 +15,15 @@ namespace Mapricot;
  * @phpstan-type Places array{results: list<Place>, attribution: list<Attribution>}
  * @phpstan-type PlaceResult array{result: Place, attribution: list<Attribution>}
  * @phpstan-type Leg array{distanceMeters: int, durationSeconds: int}
- * @phpstan-type Route array{distanceMeters: int, durationSeconds: int, polyline: string, legs: list<Leg>}
+ * @phpstan-type LineString array{type: 'LineString', coordinates: list<array{float, float}>}
+ * @phpstan-type Route array{distanceMeters: int, durationSeconds: int, polyline?: string, geometry?: LineString, legs: list<Leg>}
  * @phpstan-type Routes array{routes: list<Route>, attribution?: list<Attribution>}
  * @phpstan-type IpLocation array{ip: string, found: bool, continentCode?: string, countryCode?: string, countryName?: string, regionCode?: string, regionName?: string, city?: string, location?: Point, source: string, attributionUrl: string, licenseUrl: string, datasetRelease: string}
  * @phpstan-type Account array{id: string, name: string, status: string, createdAt: string}
  */
 final class Client
 {
-    public const VERSION = '0.3.0';
+    public const VERSION = '0.4.0';
 
     /**
      * @param int $timeout Seconds per attempt.
@@ -99,11 +100,12 @@ final class Client
      *
      * @param list<Point> $waypoints
      * @param 'drive'|'walk'|'bicycle'|null $mode
+     * @param 'polyline'|'polyline6'|'geojson'|null $geometries
      * @return Routes
      */
-    public function route(array $waypoints, ?string $mode = null): array
+    public function route(array $waypoints, ?string $mode = null, ?string $geometries = null): array
     {
-        $body = array_filter(['waypoints' => $waypoints, 'mode' => $mode], fn ($value) => $value !== null);
+        $body = array_filter(['waypoints' => $waypoints, 'mode' => $mode, 'geometries' => $geometries], fn ($value) => $value !== null);
         return $this->request('POST', $this->baseUrl . '/v1/route', json_encode($body, JSON_THROW_ON_ERROR));
     }
 
