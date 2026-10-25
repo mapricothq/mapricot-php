@@ -10,4 +10,4 @@ if ($failure === null) {
     return;
 }
 http_response_code($failure[0]);
-echo json_encode(['error' => ['code' => $failure[1], 'message' => $failure[1]], 'request_id' => 'r1']);
+echo json_encode(['error' => ['code' => $failure[1], 'message' => $failure[1]], 'requestId' => 'r1']);
