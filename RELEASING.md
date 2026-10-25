@@ -10,5 +10,5 @@ CI runs every Monday as well as on each push. Its `endpoints` job fails when [th
 
 ## One-time setup
 
-- A repository secret or organization secret `MAPRICOT_KEY`: a server key with the `places`, `routing`, and `ip-geolocation` scopes and a monthly cap, used by the live tests.
+- A repository secret or organization secret `MAPRICOT_KEY`: a server key with the `geocoding`, `places`, `routing`, and `ip-geolocation` scopes and a monthly cap, used by the live tests.
 - On packagist.org, the `mapricot/mapricot` package submitted from this repository's URL, with the Packagist GitHub app or webhook installed so it updates on each tag.

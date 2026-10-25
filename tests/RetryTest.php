@@ -44,7 +44,7 @@ final class RetryTest extends TestCase
         $client = $this->serve([[503, 'origin_overloaded'], [429, 'concurrency_exceeded']]);
         $this->assertSame(['ok' => true], $client->search('x', focus: ['lat' => 1, 'lon' => 2], country: ['US', 'CA']));
         $this->assertCount(3, $this->seen());
-        $this->assertSame('/v1/search?q=x&focus=1%2C2&country=US%2CCA', $this->seen()[0]);
+        $this->assertSame('/geocoding/v1/search?q=x&focus=1%2C2&country=US%2CCA', $this->seen()[0]);
     }
 
     public function testDoesNotRetryCreditExhausted(): void
