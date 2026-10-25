@@ -57,6 +57,13 @@ final class LiveTest extends TestCase
         $this->assertNotEmpty($data['routes'][0]['polyline']);
     }
 
+    public function testRouteGeoJson(): void
+    {
+        $data = $this->client()->route([['lat' => 43.7396, 'lon' => 7.4275], ['lat' => 43.734, 'lon' => 7.4222]], geometries: 'geojson');
+        $this->assertSame('LineString', $data['routes'][0]['geometry']['type']);
+        $this->assertGreaterThan(1, count($data['routes'][0]['geometry']['coordinates']));
+    }
+
     public function testIp(): void
     {
         $data = $this->client()->ip('8.8.8.8');
