@@ -15,7 +15,8 @@ namespace Mapricot;
  * @phpstan-type Place array{id: string, type: string, name: string, label: string, lat: float, lon: float, address?: Address, categories?: list<string>, distanceMeters?: int, source: string}
  * @phpstan-type Places array{results: list<Place>, attribution: list<Attribution>}
  * @phpstan-type PlaceResult array{result: Place, attribution: list<Attribution>}
- * @phpstan-type Leg array{distanceMeters: int, durationSeconds: int}
+ * @phpstan-type Step array{instruction: string, distanceMeters: int, durationSeconds: int, lat: float, lon: float}
+ * @phpstan-type Leg array{distanceMeters: int, durationSeconds: int, steps: list<Step>}
  * @phpstan-type LineString array{type: 'LineString', coordinates: list<array{float, float}>}
  * @phpstan-type Route array{distanceMeters: int, durationSeconds: int, polyline?: string, geometry?: LineString, legs: list<Leg>}
  * @phpstan-type Routes array{routes: list<Route>, attribution?: list<Attribution>}
@@ -26,7 +27,7 @@ namespace Mapricot;
  */
 final class Client
 {
-    public const VERSION = '0.7.0';
+    public const VERSION = '0.8.0';
 
     public readonly GeocodingService $geocoding;
     public readonly PlacesService $places;
