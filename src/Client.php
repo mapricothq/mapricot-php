@@ -6,7 +6,8 @@ namespace Mapricot;
 
 /**
  * The official client for the Mapricot API: address and place search, reverse geocoding, nearby places, routing,
- * and IP geolocation. Each method returns the API's JSON as an array, as in https://mapricot.com/api-reference/.
+ * and IP geolocation. Methods are grouped by product, as in $client->geocoding->search(). Each returns the API's JSON
+ * as an array, as in https://mapricot.com/api-reference/.
  *
  * @phpstan-type Point array{lat: float, lon: float}
  * @phpstan-type Attribution array{source: string, text: string, url: string}
@@ -25,7 +26,12 @@ namespace Mapricot;
  */
 final class Client
 {
-    public const VERSION = '0.6.0';
+    public const VERSION = '0.7.0';
+
+    public readonly GeocodingService $geocoding;
+    public readonly PlacesService $places;
+    public readonly RoutingService $routing;
+    public readonly IpGeolocationService $ipGeolocation;
 
     /**
      * @param int $timeout Seconds per attempt.
@@ -40,99 +46,10 @@ final class Client
         if ($apiKey === '') {
             throw new \InvalidArgumentException('Pass $apiKey, a Mapricot key.');
         }
-    }
-
-    /**
-     * Find addresses and places matching free text.
-     *
-     * @param Point|null $focus
-     * @param string|list<string>|null $country
-     * @return Places
-     */
-    public function search(string $q, ?array $focus = null, string|array|null $country = null, ?int $limit = null, ?string $lang = null): array
-    {
-        return $this->get('/geocoding/v1/search', ['q' => $q, 'focus' => $focus, 'country' => $country, 'limit' => $limit, 'lang' => $lang]);
-    }
-
-    /**
-     * Suggest addresses and places as someone types.
-     *
-     * @param Point|null $focus
-     * @param string|list<string>|null $country
-     * @return Places
-     */
-    public function autocomplete(string $q, ?array $focus = null, string|array|null $country = null, ?int $limit = null, ?string $lang = null): array
-    {
-        return $this->get('/geocoding/v1/autocomplete', ['q' => $q, 'focus' => $focus, 'country' => $country, 'limit' => $limit, 'lang' => $lang]);
-    }
-
-    /**
-     * Find the address nearest a coordinate, or the area around it.
-     *
-     * @return Places
-     */
-    public function reverse(float $lat, float $lon, ?int $limit = null, ?string $lang = null): array
-    {
-        return $this->get('/geocoding/v1/reverse', ['lat' => $lat, 'lon' => $lon, 'limit' => $limit, 'lang' => $lang]);
-    }
-
-    /**
-     * List places around a coordinate, optionally by category.
-     *
-     * @param string|list<string>|null $category
-     * @return Places
-     */
-    public function nearby(float $lat, float $lon, string|array|null $category = null, ?int $radius = null, ?int $limit = null, ?string $lang = null): array
-    {
-        return $this->get('/places/v1/nearby', ['lat' => $lat, 'lon' => $lon, 'category' => $category, 'radius' => $radius, 'limit' => $limit, 'lang' => $lang]);
-    }
-
-    /**
-     * Look up one place by its Mapricot ID.
-     *
-     * @return PlaceResult
-     */
-    public function place(string $id, ?string $lang = null): array
-    {
-        return $this->get('/places/v1/' . rawurlencode($id), ['lang' => $lang]);
-    }
-
-    /**
-     * Find a route through 2 to 20 waypoints.
-     *
-     * @param list<Point> $waypoints
-     * @param 'drive'|'walk'|'bicycle'|null $mode
-     * @param 'polyline'|'polyline6'|'geojson'|null $geometries
-     * @return Routes
-     */
-    public function route(array $waypoints, ?string $mode = null, ?string $geometries = null): array
-    {
-        $body = array_filter(['waypoints' => $waypoints, 'mode' => $mode, 'geometries' => $geometries], fn ($value) => $value !== null);
-        return $this->request('POST', $this->baseUrl . '/routing/v1/route', json_encode($body, JSON_THROW_ON_ERROR));
-    }
-
-    /**
-     * The areas reachable from a location within 1 to 4 times, each 1 to 60 minutes, one polygon per time, largest first.
-     *
-     * @param Point $location
-     * @param list<int> $minutes
-     * @param 'drive'|'walk'|'bicycle'|null $mode
-     * @return Isochrones
-     */
-    public function isochrone(array $location, array $minutes, ?string $mode = null): array
-    {
-        $body = array_filter(['location' => $location, 'minutes' => $minutes, 'mode' => $mode], fn ($value) => $value !== null);
-        return $this->request('POST', $this->baseUrl . '/routing/v1/isochrone', json_encode($body, JSON_THROW_ON_ERROR));
-    }
-
-    /**
-     * Approximate location of a public IP address.
-     *
-     * @return IpLocation
-     */
-    public function ip(string $address): array
-    {
-        return $this->get('/ip-geolocation/v1/' . rawurlencode($address));
+        $this->geocoding = new GeocodingService($this->get(...));
+        $this->places = new PlacesService($this->get(...));
+        $this->routing = new RoutingService($this->post(...));
+        $this->ipGeolocation = new IpGeolocationService($this->get(...));
     }
 
     /**
@@ -161,6 +78,13 @@ final class Client
         }
         $url = $this->baseUrl . $path . ($query ? '?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986) : '');
         return $this->request('GET', $url);
+    }
+
+    /** @param array<string, mixed> $body */
+    private function post(string $path, array $body): array
+    {
+        $body = array_filter($body, fn ($value) => $value !== null);
+        return $this->request('POST', $this->baseUrl . $path, json_encode($body, JSON_THROW_ON_ERROR));
     }
 
     private function request(string $method, string $url, ?string $body = null): array
