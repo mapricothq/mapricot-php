@@ -42,7 +42,7 @@ final class RetryTest extends TestCase
     public function testRetries503AndConcurrencyExceeded(): void
     {
         $client = $this->serve([[503, 'origin_overloaded'], [429, 'concurrency_exceeded']]);
-        $this->assertSame(['ok' => true], $client->search('x', focus: ['lat' => 1, 'lon' => 2], country: ['US', 'CA']));
+        $this->assertSame(['ok' => true], $client->geocoding->search('x', focus: ['lat' => 1, 'lon' => 2], country: ['US', 'CA']));
         $this->assertCount(3, $this->seen());
         $this->assertSame('/geocoding/v1/search?q=x&focus=1%2C2&country=US%2CCA', $this->seen()[0]);
     }
