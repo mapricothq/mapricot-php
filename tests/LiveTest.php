@@ -55,6 +55,13 @@ final class LiveTest extends TestCase
         $data = $this->client()->routing->route([['lat' => 43.7396, 'lon' => 7.4275], ['lat' => 43.734, 'lon' => 7.4222]], mode: 'walk');
         $this->assertCount(1, $data['routes'][0]['legs']);
         $this->assertNotEmpty($data['routes'][0]['polyline']);
+        $this->assertArrayNotHasKey('steps', $data['routes'][0]['legs'][0]);
+    }
+
+    public function testRouteStepsInFrench(): void
+    {
+        $data = $this->client()->routing->route([['lat' => 43.7396, 'lon' => 7.4275], ['lat' => 43.734, 'lon' => 7.4222]], steps: true, lang: 'fr');
+        $this->assertStringContainsString('destination', end($data['routes'][0]['legs'][0]['steps'])['instruction']);
     }
 
     public function testIsochrone(): void
