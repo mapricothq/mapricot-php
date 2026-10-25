@@ -23,12 +23,13 @@ final class RoutingService
      * @param list<Point> $waypoints
      * @param 'drive'|'walk'|'bicycle'|null $mode
      * @param 'polyline'|'polyline6'|'geojson'|null $geometries
+     * @param ?bool $steps true to include each leg's turn-by-turn steps.
      * @param ?string $lang ISO 639-1 language of the steps' instructions, such as 'fr'. English by default.
      * @return Routes
      */
-    public function route(array $waypoints, ?string $mode = null, ?string $geometries = null, ?string $lang = null): array
+    public function route(array $waypoints, ?string $mode = null, ?string $geometries = null, ?bool $steps = null, ?string $lang = null): array
     {
-        return ($this->post)('/routing/v1/route', ['waypoints' => $waypoints, 'mode' => $mode, 'geometries' => $geometries, 'lang' => $lang]);
+        return ($this->post)('/routing/v1/route', ['waypoints' => $waypoints, 'mode' => $mode, 'geometries' => $geometries, 'steps' => $steps, 'lang' => $lang]);
     }
 
     /**

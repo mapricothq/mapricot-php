@@ -16,7 +16,7 @@ namespace Mapricot;
  * @phpstan-type Places array{results: list<Place>, attribution: list<Attribution>}
  * @phpstan-type PlaceResult array{result: Place, attribution: list<Attribution>}
  * @phpstan-type Step array{instruction: string, distanceMeters: int, durationSeconds: int, lat: float, lon: float}
- * @phpstan-type Leg array{distanceMeters: int, durationSeconds: int, steps: list<Step>}
+ * @phpstan-type Leg array{distanceMeters: int, durationSeconds: int, steps?: list<Step>}
  * @phpstan-type LineString array{type: 'LineString', coordinates: list<array{float, float}>}
  * @phpstan-type Route array{distanceMeters: int, durationSeconds: int, polyline?: string, geometry?: LineString, legs: list<Leg>}
  * @phpstan-type Routes array{routes: list<Route>, attribution?: list<Attribution>}
