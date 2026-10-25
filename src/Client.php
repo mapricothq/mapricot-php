@@ -18,11 +18,11 @@ namespace Mapricot;
  * @phpstan-type Route array{distanceMeters: int, durationSeconds: int, polyline: string, legs: list<Leg>}
  * @phpstan-type Routes array{routes: list<Route>, attribution?: list<Attribution>}
  * @phpstan-type IpLocation array{ip: string, found: bool, continentCode?: string, countryCode?: string, countryName?: string, regionCode?: string, regionName?: string, city?: string, location?: Point, source: string, attributionUrl: string, licenseUrl: string, datasetRelease: string}
- * @phpstan-type Account array{id: string, name: string, status: string, created_at: string}
+ * @phpstan-type Account array{id: string, name: string, status: string, createdAt: string, created_at: string}
  */
 final class Client
 {
-    public const VERSION = '0.2.0';
+    public const VERSION = '0.3.0';
 
     /**
      * @param int $timeout Seconds per attempt.
