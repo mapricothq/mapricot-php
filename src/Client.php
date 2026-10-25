@@ -22,26 +22,21 @@ namespace Mapricot;
  */
 final class Client
 {
-    public const VERSION = '0.1.0';
-
-    private string $apiKey;
+    public const VERSION = '0.2.0';
 
     /**
-     * @param string|null $apiKey Defaults to the MAPRICOT_KEY environment variable.
      * @param int $timeout Seconds per attempt.
      * @param int $maxRetries Retries for 503 and for 429 with too many requests in progress.
      */
     public function __construct(
-        ?string $apiKey = null,
+        private string $apiKey,
         private string $baseUrl = 'https://api.mapricot.com',
         private int $timeout = 30,
         private int $maxRetries = 2,
     ) {
-        $apiKey ??= getenv('MAPRICOT_KEY') ?: null;
-        if ($apiKey === null || $apiKey === '') {
-            throw new \InvalidArgumentException('Pass $apiKey or set MAPRICOT_KEY.');
+        if ($apiKey === '') {
+            throw new \InvalidArgumentException('Pass $apiKey, a Mapricot key.');
         }
-        $this->apiKey = $apiKey;
     }
 
     /**
