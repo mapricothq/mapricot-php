@@ -112,7 +112,7 @@ final class Client
     }
 
     /**
-     * The areas reachable from a location within 1 to 4 times, each 1 to 120 minutes, one polygon per time, largest first.
+     * The areas reachable from a location within 1 to 4 times, each 1 to 60 minutes, one polygon per time, largest first.
      *
      * @param Point $location
      * @param list<int> $minutes
