@@ -23,7 +23,7 @@ namespace Mapricot;
  */
 final class Client
 {
-    public const VERSION = '0.4.0';
+    public const VERSION = '0.5.0';
 
     /**
      * @param int $timeout Seconds per attempt.
@@ -49,7 +49,7 @@ final class Client
      */
     public function search(string $q, ?array $focus = null, string|array|null $country = null, ?int $limit = null, ?string $lang = null): array
     {
-        return $this->get('/v1/search', ['q' => $q, 'focus' => $focus, 'country' => $country, 'limit' => $limit, 'lang' => $lang]);
+        return $this->get('/geocoding/v1/search', ['q' => $q, 'focus' => $focus, 'country' => $country, 'limit' => $limit, 'lang' => $lang]);
     }
 
     /**
@@ -61,7 +61,7 @@ final class Client
      */
     public function autocomplete(string $q, ?array $focus = null, string|array|null $country = null, ?int $limit = null, ?string $lang = null): array
     {
-        return $this->get('/v1/autocomplete', ['q' => $q, 'focus' => $focus, 'country' => $country, 'limit' => $limit, 'lang' => $lang]);
+        return $this->get('/geocoding/v1/autocomplete', ['q' => $q, 'focus' => $focus, 'country' => $country, 'limit' => $limit, 'lang' => $lang]);
     }
 
     /**
@@ -71,7 +71,7 @@ final class Client
      */
     public function reverse(float $lat, float $lon, ?int $limit = null, ?string $lang = null): array
     {
-        return $this->get('/v1/reverse', ['lat' => $lat, 'lon' => $lon, 'limit' => $limit, 'lang' => $lang]);
+        return $this->get('/geocoding/v1/reverse', ['lat' => $lat, 'lon' => $lon, 'limit' => $limit, 'lang' => $lang]);
     }
 
     /**
@@ -82,7 +82,7 @@ final class Client
      */
     public function nearby(float $lat, float $lon, string|array|null $category = null, ?int $radius = null, ?int $limit = null, ?string $lang = null): array
     {
-        return $this->get('/v1/nearby', ['lat' => $lat, 'lon' => $lon, 'category' => $category, 'radius' => $radius, 'limit' => $limit, 'lang' => $lang]);
+        return $this->get('/places/v1/nearby', ['lat' => $lat, 'lon' => $lon, 'category' => $category, 'radius' => $radius, 'limit' => $limit, 'lang' => $lang]);
     }
 
     /**
@@ -92,7 +92,7 @@ final class Client
      */
     public function place(string $id, ?string $lang = null): array
     {
-        return $this->get('/v1/places/' . rawurlencode($id), ['lang' => $lang]);
+        return $this->get('/places/v1/' . rawurlencode($id), ['lang' => $lang]);
     }
 
     /**
@@ -106,7 +106,7 @@ final class Client
     public function route(array $waypoints, ?string $mode = null, ?string $geometries = null): array
     {
         $body = array_filter(['waypoints' => $waypoints, 'mode' => $mode, 'geometries' => $geometries], fn ($value) => $value !== null);
-        return $this->request('POST', $this->baseUrl . '/v1/route', json_encode($body, JSON_THROW_ON_ERROR));
+        return $this->request('POST', $this->baseUrl . '/routing/v1/route', json_encode($body, JSON_THROW_ON_ERROR));
     }
 
     /**
@@ -116,7 +116,7 @@ final class Client
      */
     public function ip(string $address): array
     {
-        return $this->get('/v1/ip/' . rawurlencode($address));
+        return $this->get('/ip-geolocation/v1/' . rawurlencode($address));
     }
 
     /**
@@ -126,7 +126,7 @@ final class Client
      */
     public function account(): array
     {
-        return $this->get('/v1/account');
+        return $this->get('/account');
     }
 
     /** @param array<string, mixed> $params */
