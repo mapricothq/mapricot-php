@@ -15,7 +15,7 @@ final class LiveTest extends TestCase
         if (!getenv('MAPRICOT_KEY')) {
             $this->markTestSkipped('set MAPRICOT_KEY to run tests against the live API');
         }
-        return new Client();
+        return new Client(getenv('MAPRICOT_KEY'));
     }
 
     public function testSearch(): void

@@ -10,25 +10,19 @@ It needs PHP 8.1 or later with the `curl` extension, and has no other dependenci
 
 ## Quick start
 
-Create a server key in the [dashboard](https://app.mapricot.com/) and set it as `MAPRICOT_KEY`:
-
-```sh
-export MAPRICOT_KEY="mapricot_sk_…"
-```
+Create a server key in the [dashboard](https://app.mapricot.com/) and pass it to the client. Keep it out of your source code, for example by reading it from an environment variable as here.
 
 ```php
 <?php
 
 require 'vendor/autoload.php';
 
-$client = new Mapricot\Client();
+$client = new Mapricot\Client(getenv('MAPRICOT_KEY'));
 
 $data = $client->search('128 SW 3rd Ave, Portland', limit: 1);
 $place = $data['results'][0];
 echo $place['label'], ' ', $place['lat'], ' ', $place['lon'], "\n";
 ```
-
-Pass the key yourself with `new Mapricot\Client('mapricot_sk_…')`.
 
 ## Methods
 
