@@ -18,12 +18,14 @@ namespace Mapricot;
  * @phpstan-type LineString array{type: 'LineString', coordinates: list<array{float, float}>}
  * @phpstan-type Route array{distanceMeters: int, durationSeconds: int, polyline?: string, geometry?: LineString, legs: list<Leg>}
  * @phpstan-type Routes array{routes: list<Route>, attribution?: list<Attribution>}
+ * @phpstan-type Isochrone array{type: 'Feature', properties: array{minutes: int}, geometry: array{type: 'Polygon'|'MultiPolygon', coordinates: list<mixed>}}
+ * @phpstan-type Isochrones array{type: 'FeatureCollection', features: list<Isochrone>, attribution?: list<Attribution>}
  * @phpstan-type IpLocation array{ip: string, found: bool, continentCode?: string, countryCode?: string, countryName?: string, regionCode?: string, regionName?: string, city?: string, location?: Point, source: string, attributionUrl: string, licenseUrl: string, datasetRelease: string}
  * @phpstan-type Account array{id: string, name: string, status: string, createdAt: string}
  */
 final class Client
 {
-    public const VERSION = '0.5.0';
+    public const VERSION = '0.6.0';
 
     /**
      * @param int $timeout Seconds per attempt.
@@ -107,6 +109,20 @@ final class Client
     {
         $body = array_filter(['waypoints' => $waypoints, 'mode' => $mode, 'geometries' => $geometries], fn ($value) => $value !== null);
         return $this->request('POST', $this->baseUrl . '/routing/v1/route', json_encode($body, JSON_THROW_ON_ERROR));
+    }
+
+    /**
+     * The areas reachable from a location within 1 to 4 times, each 1 to 60 minutes, one polygon per time, largest first.
+     *
+     * @param Point $location
+     * @param list<int> $minutes
+     * @param 'drive'|'walk'|'bicycle'|null $mode
+     * @return Isochrones
+     */
+    public function isochrone(array $location, array $minutes, ?string $mode = null): array
+    {
+        $body = array_filter(['location' => $location, 'minutes' => $minutes, 'mode' => $mode], fn ($value) => $value !== null);
+        return $this->request('POST', $this->baseUrl . '/routing/v1/isochrone', json_encode($body, JSON_THROW_ON_ERROR));
     }
 
     /**

@@ -57,6 +57,14 @@ final class LiveTest extends TestCase
         $this->assertNotEmpty($data['routes'][0]['polyline']);
     }
 
+    public function testIsochrone(): void
+    {
+        $data = $this->client()->isochrone(['lat' => 43.7396, 'lon' => 7.4275], [5, 10], mode: 'walk');
+        $this->assertSame([10, 5], array_map(fn ($feature) => $feature['properties']['minutes'], $data['features']));
+        $this->assertSame('Polygon', $data['features'][0]['geometry']['type']);
+        $this->assertNotEmpty($data['attribution']);
+    }
+
     public function testRouteGeoJson(): void
     {
         $data = $this->client()->route([['lat' => 43.7396, 'lon' => 7.4275], ['lat' => 43.734, 'lon' => 7.4222]], geometries: 'geojson');
