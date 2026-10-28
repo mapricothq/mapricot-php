@@ -12,7 +12,7 @@ namespace Mapricot;
  * @phpstan-type Point array{lat: float, lon: float}
  * @phpstan-type Attribution array{source: string, text: string, url: string}
  * @phpstan-type Address array{houseNumber?: string, street?: string, postalCode?: string, locality?: string, region?: string, regionCode?: string, country?: string, countryCode?: string}
- * @phpstan-type Place array{id: string, type: string, name: string, label: string, lat: float, lon: float, address?: Address, categories?: list<string>, distanceMeters?: int, source: string}
+ * @phpstan-type Place array{id: string, type: string, name: string, label: string, lat: float, lon: float, address?: Address, categories?: list<string>, phones?: list<string>, websites?: list<string>, socials?: list<string>, brand?: string, openingHours?: string, distanceMeters?: int, source: string}
  * @phpstan-type Places array{results: list<Place>, attribution: list<Attribution>}
  * @phpstan-type PlaceResult array{result: Place, attribution: list<Attribution>}
  * @phpstan-type Step array{instruction: string, distanceMeters: int, durationSeconds: int, lat: float, lon: float}
