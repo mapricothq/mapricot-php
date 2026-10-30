@@ -21,7 +21,7 @@ namespace Mapricot;
  * @phpstan-type Step array{instruction: string, distanceMeters: int, durationSeconds: int, lat: float, lon: float}
  * @phpstan-type Leg array{distanceMeters: int, durationSeconds: int, steps?: list<Step>}
  * @phpstan-type LineString array{type: 'LineString', coordinates: list<array{float, float}>}
- * @phpstan-type Route array{distanceMeters: int, durationSeconds: int, polyline?: string, geometry?: LineString, legs: list<Leg>}
+ * @phpstan-type Route array{waypointOrder?: list<int>, distanceMeters: int, durationSeconds: int, polyline?: string, geometry?: LineString, legs: list<Leg>}
  * @phpstan-type Routes array{routes: list<Route>, attribution?: list<Attribution>}
  * @phpstan-type Isochrone array{type: 'Feature', properties: array{minutes: int}, geometry: array{type: 'Polygon'|'MultiPolygon', coordinates: list<mixed>}}
  * @phpstan-type Isochrones array{type: 'FeatureCollection', features: list<Isochrone>, attribution?: list<Attribution>}
