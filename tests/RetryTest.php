@@ -58,4 +58,11 @@ final class RetryTest extends TestCase
         }
         $this->assertCount(1, $this->seen());
     }
+
+    public function testSearchBatchSendsQueriesAsSearchParameters(): void
+    {
+        $client = $this->serve([]);
+        $client->geocoding->searchBatch([['q' => 'x', 'focus' => ['lat' => 1, 'lon' => 2], 'country' => ['US', 'CA'], 'limit' => 1]]);
+        $this->assertSame(['/geocoding/v1/search/batch', '{"queries":[{"q":"x","focus":"1,2","country":"US,CA","limit":"1"}]}'], $this->seen());
+    }
 }
