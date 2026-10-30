@@ -15,6 +15,9 @@ namespace Mapricot;
  * @phpstan-type Place array{id: string, type: string, name: string, label: string, lat: float, lon: float, address?: Address, categories?: list<string>, phones?: list<string>, websites?: list<string>, socials?: list<string>, brand?: string, openingHours?: string, distanceMeters?: int, source: string}
  * @phpstan-type Places array{results: list<Place>, attribution: list<Attribution>}
  * @phpstan-type PlaceResult array{result: Place, attribution: list<Attribution>}
+ * @phpstan-type SearchQuery array{q: string, focus?: Point, country?: string|list<string>, limit?: int, lang?: string}
+ * @phpstan-type SearchResponse array{results?: list<Place>, attribution?: list<Attribution>, error?: array{code: string, message: string}}
+ * @phpstan-type SearchBatch array{responses: list<SearchResponse>}
  * @phpstan-type Step array{instruction: string, distanceMeters: int, durationSeconds: int, lat: float, lon: float}
  * @phpstan-type Leg array{distanceMeters: int, durationSeconds: int, steps?: list<Step>}
  * @phpstan-type LineString array{type: 'LineString', coordinates: list<array{float, float}>}
@@ -27,7 +30,7 @@ namespace Mapricot;
  */
 final class Client
 {
-    public const VERSION = '0.10.0';
+    public const VERSION = '0.11.0';
 
     public readonly GeocodingService $geocoding;
     public readonly PlacesService $places;
@@ -47,7 +50,7 @@ final class Client
         if ($apiKey === '') {
             throw new \InvalidArgumentException('Pass $apiKey, a Mapricot key.');
         }
-        $this->geocoding = new GeocodingService($this->get(...));
+        $this->geocoding = new GeocodingService($this->get(...), $this->post(...), self::query(...));
         $this->places = new PlacesService($this->get(...));
         $this->routing = new RoutingService($this->post(...));
         $this->ipGeolocation = new IpGeolocationService($this->get(...));
@@ -66,6 +69,19 @@ final class Client
     /** @param array<string, mixed> $params */
     private function get(string $path, array $params = []): array
     {
+        $query = self::query($params);
+        $url = $this->baseUrl . $path . ($query ? '?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986) : '');
+        return $this->request('GET', $url);
+    }
+
+    /**
+     * Parameters as the API takes them in a query string, without the ones that are null.
+     *
+     * @param array<string, mixed> $params
+     * @return array<string, string>
+     */
+    private static function query(array $params): array
+    {
         $query = [];
         foreach ($params as $name => $value) {
             if ($value === null) {
@@ -77,8 +93,7 @@ final class Client
                 default => (string) $value,
             };
         }
-        $url = $this->baseUrl . $path . ($query ? '?' . http_build_query($query, '', '&', PHP_QUERY_RFC3986) : '');
-        return $this->request('GET', $url);
+        return $query;
     }
 
     /** @param array<string, mixed> $body */

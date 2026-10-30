@@ -25,6 +25,14 @@ final class LiveTest extends TestCase
         $this->assertNotEmpty($data['attribution']);
     }
 
+    public function testSearchBatch(): void
+    {
+        $data = $this->client()->geocoding->searchBatch([['q' => '128 SW 3rd Ave, Portland', 'country' => ['US'], 'limit' => 1], ['q' => '']]);
+        [$first, $second] = $data['responses'];
+        $this->assertSame('Portland', $first['results'][0]['address']['locality']);
+        $this->assertSame('invalid_request', $second['error']['code']);
+    }
+
     public function testAutocomplete(): void
     {
         $data = $this->client()->geocoding->autocomplete('stumptown', focus: ['lat' => 45.52, 'lon' => -122.68], limit: 1);
