@@ -64,6 +64,14 @@ final class LiveTest extends TestCase
         $this->assertStringContainsString('destination', end($data['routes'][0]['legs'][0]['steps'])['instruction']);
     }
 
+    public function testOptimize(): void
+    {
+        $stops = [['lat' => 43.7396, 'lon' => 7.4275], ['lat' => 43.7311, 'lon' => 7.4197], ['lat' => 43.7445, 'lon' => 7.431], ['lat' => 43.734, 'lon' => 7.4222]];
+        $data = $this->client()->routing->optimize($stops);
+        $this->assertSame([0, 2, 1, 3], $data['routes'][0]['waypointOrder']);
+        $this->assertCount(3, $data['routes'][0]['legs']);
+    }
+
     public function testIsochrone(): void
     {
         $data = $this->client()->routing->isochrone(['lat' => 43.7396, 'lon' => 7.4275], [5, 10], mode: 'walk');
