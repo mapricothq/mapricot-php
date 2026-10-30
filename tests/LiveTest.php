@@ -94,16 +94,16 @@ final class LiveTest extends TestCase
         $data = $this->client()->routing->route($stops, mode: 'walk', costing: ['type' => 'wheelchair']);
         $this->assertCount(1, $data['routes'][0]['legs']);
         try {
-            $this->client()->routing->route($stops, mode: 'walk', costing: ['use_tolls' => 0]);
+            $this->client()->routing->route($stops, mode: 'walk', costing: ['useTolls' => 0]);
             $this->fail('expected MapricotException');
         } catch (MapricotException $error) {
-            $this->assertStringContainsString("costing.use_tolls isn't an option for walk", $error->getMessage());
+            $this->assertStringContainsString("costing.useTolls isn't an option for walk", $error->getMessage());
         }
     }
 
     public function testIsochroneCosting(): void
     {
-        $data = $this->client()->routing->isochrone(['lat' => 43.7396, 'lon' => 7.4275], [5], mode: 'walk', costing: ['walking_speed' => 3]);
+        $data = $this->client()->routing->isochrone(['lat' => 43.7396, 'lon' => 7.4275], [5], mode: 'walk', costing: ['walkingSpeed' => 3]);
         $this->assertCount(1, $data['features']);
     }
 

@@ -25,7 +25,7 @@ final class RoutingService
      * @param 'polyline'|'polyline6'|'geojson'|null $geometries
      * @param ?bool $steps true to include each leg's turn-by-turn steps.
      * @param ?string $lang ISO 639-1 language of the steps' instructions, such as 'fr'. English by default.
-     * @param ?array<string, float|int|bool|string> $costing Valhalla's costing options for the mode, such as ['use_tolls' => 0]:
+     * @param ?array<string, float|int|bool|string> $costing Valhalla's costing options for the mode, such as ['useTolls' => 0]:
      *     https://mapricot.com/docs/routing/#costing-options.
      * @return Routes
      */
