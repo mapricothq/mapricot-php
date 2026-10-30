@@ -88,6 +88,25 @@ final class LiveTest extends TestCase
         $this->assertNotEmpty($data['attribution']);
     }
 
+    public function testRouteCosting(): void
+    {
+        $stops = [['lat' => 43.7396, 'lon' => 7.4275], ['lat' => 43.734, 'lon' => 7.4222]];
+        $data = $this->client()->routing->route($stops, mode: 'walk', costing: ['type' => 'wheelchair']);
+        $this->assertCount(1, $data['routes'][0]['legs']);
+        try {
+            $this->client()->routing->route($stops, mode: 'walk', costing: ['useTolls' => 0]);
+            $this->fail('expected MapricotException');
+        } catch (MapricotException $error) {
+            $this->assertStringContainsString("costing.useTolls isn't an option for walk", $error->getMessage());
+        }
+    }
+
+    public function testIsochroneCosting(): void
+    {
+        $data = $this->client()->routing->isochrone(['lat' => 43.7396, 'lon' => 7.4275], [5], mode: 'walk', costing: ['walkingSpeed' => 3]);
+        $this->assertCount(1, $data['features']);
+    }
+
     public function testRouteGeoJson(): void
     {
         $data = $this->client()->routing->route([['lat' => 43.7396, 'lon' => 7.4275], ['lat' => 43.734, 'lon' => 7.4222]], geometries: 'geojson');

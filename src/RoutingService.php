@@ -25,11 +25,13 @@ final class RoutingService
      * @param 'polyline'|'polyline6'|'geojson'|null $geometries
      * @param ?bool $steps true to include each leg's turn-by-turn steps.
      * @param ?string $lang ISO 639-1 language of the steps' instructions, such as 'fr'. English by default.
+     * @param ?array<string, float|int|bool|string> $costing Valhalla's costing options for the mode, such as ['useTolls' => 0]:
+     *     https://mapricot.com/docs/routing/#costing-options.
      * @return Routes
      */
-    public function route(array $waypoints, ?string $mode = null, ?string $geometries = null, ?bool $steps = null, ?string $lang = null): array
+    public function route(array $waypoints, ?string $mode = null, ?string $geometries = null, ?bool $steps = null, ?string $lang = null, ?array $costing = null): array
     {
-        return ($this->post)('/routing/v1/route', ['waypoints' => $waypoints, 'mode' => $mode, 'geometries' => $geometries, 'steps' => $steps, 'lang' => $lang]);
+        return ($this->post)('/routing/v1/route', ['waypoints' => $waypoints, 'mode' => $mode, 'geometries' => $geometries, 'steps' => $steps, 'lang' => $lang, 'costing' => $costing ?: null]);
     }
 
     /**
@@ -40,11 +42,12 @@ final class RoutingService
      * @param 'polyline'|'polyline6'|'geojson'|null $geometries
      * @param ?bool $steps true to include each leg's turn-by-turn steps.
      * @param ?string $lang ISO 639-1 language of the steps' instructions, such as 'fr'. English by default.
+     * @param ?array<string, float|int|bool|string> $costing As for route.
      * @return Routes
      */
-    public function optimize(array $waypoints, ?string $mode = null, ?string $geometries = null, ?bool $steps = null, ?string $lang = null): array
+    public function optimize(array $waypoints, ?string $mode = null, ?string $geometries = null, ?bool $steps = null, ?string $lang = null, ?array $costing = null): array
     {
-        return ($this->post)('/routing/v1/optimize', ['waypoints' => $waypoints, 'mode' => $mode, 'geometries' => $geometries, 'steps' => $steps, 'lang' => $lang]);
+        return ($this->post)('/routing/v1/optimize', ['waypoints' => $waypoints, 'mode' => $mode, 'geometries' => $geometries, 'steps' => $steps, 'lang' => $lang, 'costing' => $costing ?: null]);
     }
 
     /**
@@ -53,10 +56,11 @@ final class RoutingService
      * @param Point $location
      * @param list<int> $minutes
      * @param 'drive'|'walk'|'bicycle'|null $mode
+     * @param ?array<string, float|int|bool|string> $costing As for route.
      * @return Isochrones
      */
-    public function isochrone(array $location, array $minutes, ?string $mode = null): array
+    public function isochrone(array $location, array $minutes, ?string $mode = null, ?array $costing = null): array
     {
-        return ($this->post)('/routing/v1/isochrone', ['location' => $location, 'minutes' => $minutes, 'mode' => $mode]);
+        return ($this->post)('/routing/v1/isochrone', ['location' => $location, 'minutes' => $minutes, 'mode' => $mode, 'costing' => $costing ?: null]);
     }
 }
