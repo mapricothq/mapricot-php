@@ -30,7 +30,7 @@ namespace Mapricot;
  */
 final class Client
 {
-    public const VERSION = '0.11.0';
+    public const VERSION = '0.12.0';
 
     public readonly GeocodingService $geocoding;
     public readonly PlacesService $places;
