@@ -26,7 +26,7 @@ echo $place['label'], ' ', $place['lat'], ' ', $place['lon'], "\n";
 
 ## Methods
 
-Methods are grouped by product, the same way as the API's paths. Each returns the API's JSON as an array, with the same field names as the [API reference](https://mapricot.com/api-reference/). The array shapes are declared for PHPStan and Psalm.
+Methods are grouped by product, the same way as the API's paths. Each returns the API's JSON as an array, with the same field names as the [API reference](https://mapricot.com/docs/api-reference/). The array shapes are declared for PHPStan and Psalm.
 
 | Method | Endpoint |
 | --- | --- |
@@ -88,11 +88,11 @@ try {
 }
 ```
 
-A network failure throws `RuntimeException`. The client retries `503` responses and `429 concurrency_exceeded`, up to twice, waiting longer each time. Errors aren't billed. Pass `maxRetries:` and `timeout:` (seconds) to `new Mapricot\Client(...)` to change this. The [API reference](https://mapricot.com/api-reference/#errors) lists every status.
+A network failure throws `RuntimeException`. The client retries `503` responses and `429 concurrency_exceeded`, up to twice, waiting longer each time. Errors aren't billed. Pass `maxRetries:` and `timeout:` (seconds) to `new Mapricot\Client(...)` to change this. The [API reference](https://mapricot.com/docs/api-reference/#errors) lists every status.
 
 ## Links
 
 - [Mapricot](https://mapricot.com/)
 - [PHP docs](https://mapricot.com/docs/php/)
-- [API reference](https://mapricot.com/api-reference/)
+- [API reference](https://mapricot.com/docs/api-reference/)
 - [Pricing](https://mapricot.com/pricing/)
