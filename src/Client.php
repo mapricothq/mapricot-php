@@ -7,7 +7,7 @@ namespace Mapricot;
 /**
  * The official client for the Mapricot API: address and place search, reverse geocoding, nearby places, routing,
  * and IP geolocation. Methods are grouped by product, as in $client->geocoding->search(). Each returns the API's JSON
- * as an array, as in https://mapricot.com/api-reference/.
+ * as an array, as in https://mapricot.com/docs/api-reference/.
  *
  * @phpstan-type Point array{lat: float, lon: float}
  * @phpstan-type Attribution array{source: string, text: string, url: string}
