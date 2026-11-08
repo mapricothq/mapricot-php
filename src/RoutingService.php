@@ -57,10 +57,11 @@ final class RoutingService
      * @param list<int> $minutes
      * @param 'drive'|'walk'|'bicycle'|null $mode
      * @param ?array<string, float|int|bool|string> $costing As for route.
+     * @param int|float|null $generalize Smooths each outline to within this many meters, from 10 to 5000. Left out, the API picks it from the travel time.
      * @return Isochrones
      */
-    public function isochrone(array $location, array $minutes, ?string $mode = null, ?array $costing = null): array
+    public function isochrone(array $location, array $minutes, ?string $mode = null, ?array $costing = null, int|float|null $generalize = null): array
     {
-        return ($this->post)('/routing/v1/isochrone', ['location' => $location, 'minutes' => $minutes, 'mode' => $mode, 'costing' => $costing ?: null]);
+        return ($this->post)('/routing/v1/isochrone', ['location' => $location, 'minutes' => $minutes, 'mode' => $mode, 'costing' => $costing ?: null, 'generalize' => $generalize]);
     }
 }
