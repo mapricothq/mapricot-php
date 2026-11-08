@@ -1,6 +1,6 @@
 # Mapricot for PHP
 
-The official PHP client for the [Mapricot API](https://mapricot.com/): address and place search, reverse geocoding, nearby places, routing, and IP geolocation, with 250,000 free requests every month.
+The official PHP client for the [Mapricot API](https://mapricot.com/): address and place search, reverse geocoding, nearby places, routing, and IP geolocation, with 250,000 free requests every 30 days.
 
 ```sh
 composer require mapricot/mapricot
