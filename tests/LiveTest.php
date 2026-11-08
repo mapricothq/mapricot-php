@@ -107,6 +107,14 @@ final class LiveTest extends TestCase
         $this->assertCount(1, $data['features']);
     }
 
+    public function testIsochroneGeneralize(): void
+    {
+        $location = ['lat' => 43.7396, 'lon' => 7.4275];
+        $detailed = $this->client()->routing->isochrone($location, [10], mode: 'walk');
+        $smooth = $this->client()->routing->isochrone($location, [10], mode: 'walk', generalize: 300);
+        $this->assertLessThan(strlen(json_encode($detailed['features'][0]['geometry'])), strlen(json_encode($smooth['features'][0]['geometry'])));
+    }
+
     public function testRouteGeoJson(): void
     {
         $data = $this->client()->routing->route([['lat' => 43.7396, 'lon' => 7.4275], ['lat' => 43.734, 'lon' => 7.4222]], geometries: 'geojson');
