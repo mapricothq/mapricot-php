@@ -19,19 +19,42 @@ final class GeocodingService
     }
 
     /**
-     * Find addresses and places matching free text.
+     * Find addresses and places matching free text in $q, or an address given in parts in place of $q, as in
+     * search(address: '10 Downing Street', locality: 'London').
      *
      * @param Point|null $focus
      * @param string|list<string>|null $country
      * @return Places
      */
-    public function search(string $q, ?array $focus = null, string|array|null $country = null, ?int $limit = null, ?string $lang = null): array
-    {
-        return ($this->get)('/geocoding/v1/search', ['q' => $q, 'focus' => $focus, 'country' => $country, 'limit' => $limit, 'lang' => $lang]);
+    public function search(
+        ?string $q = null,
+        ?array $focus = null,
+        string|array|null $country = null,
+        ?int $limit = null,
+        ?string $lang = null,
+        ?string $address = null,
+        ?string $locality = null,
+        ?string $county = null,
+        ?string $region = null,
+        ?string $postalCode = null,
+    ): array {
+        return ($this->get)('/geocoding/v1/search', [
+            'q' => $q,
+            'address' => $address,
+            'locality' => $locality,
+            'county' => $county,
+            'region' => $region,
+            'postalCode' => $postalCode,
+            'focus' => $focus,
+            'country' => $country,
+            'limit' => $limit,
+            'lang' => $lang,
+        ]);
     }
 
     /**
-     * Run up to 100 searches in one request, each an array of search's parameters, such as ['q' => '…', 'limit' => 1].
+     * Run up to 100 searches in one request, each an array of search's parameters, such as ['q' => '…', 'limit' => 1]
+     * or ['address' => '…', 'postalCode' => '…'].
      * Each completed search is billed as one request. 'responses' answers them in order, each with 'results' and
      * 'attribution', or an 'error' with the code and message the search would get on its own, which isn't thrown.
      *

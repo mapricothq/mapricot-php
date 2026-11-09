@@ -15,7 +15,7 @@ namespace Mapricot;
  * @phpstan-type Place array{id: string, type: string, name: string, label: string, lat: float, lon: float, address?: Address, categories?: list<string>, phones?: list<string>, websites?: list<string>, socials?: list<string>, brand?: string, openingHours?: string, distanceMeters?: int, source: string}
  * @phpstan-type Places array{results: list<Place>, attribution: list<Attribution>}
  * @phpstan-type PlaceResult array{result: Place, attribution: list<Attribution>}
- * @phpstan-type SearchQuery array{q: string, focus?: Point, country?: string|list<string>, limit?: int, lang?: string}
+ * @phpstan-type SearchQuery array{q?: string, address?: string, locality?: string, county?: string, region?: string, postalCode?: string, focus?: Point, country?: string|list<string>, limit?: int, lang?: string}
  * @phpstan-type SearchResponse array{results?: list<Place>, attribution?: list<Attribution>, error?: array{code: string, message: string}}
  * @phpstan-type SearchBatch array{responses: list<SearchResponse>}
  * @phpstan-type Step array{instruction: string, distanceMeters: int, durationSeconds: int, lat: float, lon: float}
@@ -30,7 +30,7 @@ namespace Mapricot;
  */
 final class Client
 {
-    public const VERSION = '0.13.0';
+    public const VERSION = '0.14.0';
 
     public readonly GeocodingService $geocoding;
     public readonly PlacesService $places;

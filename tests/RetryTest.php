@@ -59,6 +59,13 @@ final class RetryTest extends TestCase
         $this->assertCount(1, $this->seen());
     }
 
+    public function testSearchSendsAnAddressInPartsInPlaceOfQ(): void
+    {
+        $client = $this->serve([]);
+        $client->geocoding->search(address: '10 Downing Street', postalCode: 'SW1A 2AA', country: 'GB');
+        $this->assertSame(['/geocoding/v1/search?address=10%20Downing%20Street&postalCode=SW1A%202AA&country=GB'], $this->seen());
+    }
+
     public function testSearchBatchSendsQueriesAsSearchParameters(): void
     {
         $client = $this->serve([]);

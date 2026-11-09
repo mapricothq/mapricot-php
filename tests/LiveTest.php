@@ -25,6 +25,12 @@ final class LiveTest extends TestCase
         $this->assertNotEmpty($data['attribution']);
     }
 
+    public function testSearchByAddressParts(): void
+    {
+        $data = $this->client()->geocoding->search(address: '128 SW 3rd Ave', locality: 'Portland', country: ['US'], limit: 1);
+        $this->assertSame('Portland', $data['results'][0]['address']['locality']);
+    }
+
     public function testSearchBatch(): void
     {
         $data = $this->client()->geocoding->searchBatch([['q' => '128 SW 3rd Ave, Portland', 'country' => ['US'], 'limit' => 1], ['q' => '']]);
