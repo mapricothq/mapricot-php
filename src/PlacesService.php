@@ -34,6 +34,9 @@ final class PlacesService
      */
     public function get(string $id, ?string $lang = null): array
     {
+        if ($id === '') {
+            throw new \InvalidArgumentException('Pass a place ID. An estimated address has none, so search again to find it.');
+        }
         return ($this->get)('/places/v1/' . rawurlencode($id), ['lang' => $lang]);
     }
 }
