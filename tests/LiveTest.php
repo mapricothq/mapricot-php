@@ -61,6 +61,7 @@ final class LiveTest extends TestCase
     {
         $client = $this->client();
         $found = $client->geocoding->search('Pioneer Courthouse Square, Portland', limit: 1)['results'][0];
+        $this->assertArrayHasKey('id', $found);
         $this->assertSame($found['id'], $client->places->get($found['id'])['result']['id']);
     }
 

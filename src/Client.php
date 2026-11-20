@@ -12,9 +12,9 @@ namespace Mapricot;
  * @phpstan-type Point array{lat: float, lon: float}
  * @phpstan-type Attribution array{source: string, text: string, url: string}
  * @phpstan-type Address array{houseNumber?: string, street?: string, postalCode?: string, locality?: string, region?: string, regionCode?: string, country?: string, countryCode?: string}
- * @phpstan-type Place array{id: string, type: string, name: string, label: string, lat: float, lon: float, address?: Address, categories?: list<string>, phones?: list<string>, websites?: list<string>, socials?: list<string>, brand?: string, openingHours?: string, distanceMeters?: int, source: string}
+ * @phpstan-type Place array{id?: string, type: string, name: string, label: string, lat: float, lon: float, address?: Address, categories?: list<string>, phones?: list<string>, websites?: list<string>, socials?: list<string>, brand?: string, openingHours?: string, distanceMeters?: int, interpolated?: bool, source: string}
  * @phpstan-type Places array{results: list<Place>, attribution: list<Attribution>}
- * @phpstan-type PlaceResult array{result: Place, attribution: list<Attribution>}
+ * @phpstan-type PlaceResult array{result: Place&array{id: string}, attribution: list<Attribution>}
  * @phpstan-type SearchQuery array{q?: string, address?: string, locality?: string, county?: string, region?: string, postalCode?: string, focus?: Point, country?: string|list<string>, limit?: int, lang?: string}
  * @phpstan-type SearchResponse array{results?: list<Place>, attribution?: list<Attribution>, error?: array{code: string, message: string}}
  * @phpstan-type SearchBatch array{responses: list<SearchResponse>}
@@ -30,7 +30,7 @@ namespace Mapricot;
  */
 final class Client
 {
-    public const VERSION = '0.14.0';
+    public const VERSION = '0.15.0';
 
     public readonly GeocodingService $geocoding;
     public readonly PlacesService $places;
